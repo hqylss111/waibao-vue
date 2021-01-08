@@ -7,10 +7,19 @@ const api = {
     login(account, password) {
         return axios({
             method: 'post',
-            url: '/api/user/login',
+            url: '/api/admin/login',
             data: {
                 account: account,
                 password: password
+            },
+        })
+    },
+    dmeo(){
+        return axios({
+            method: 'post',
+            url: '/configuration/listForm',
+            data: {
+                projectId:3
             },
         })
     },
@@ -26,6 +35,30 @@ const api = {
             },
         })
     },
+    //心得的心
+    Score(score, id) {
+        return axios({
+            method: "post",
+            url: '/api/student/setExperienceScore',
+            data: {
+                score: score, // 得分
+                id: id //学生id
+            }
+        })
+    },
+    //班级导入学生
+    exClass(classId, id, list) {
+        return axios({
+            method: "post",
+            url: '/api/student/create',
+            data: {
+                classId: classId,
+                semesterId: id,
+                student: list
+            }
+        })
+    },
+    //班级导入学生
     //创建学期
     setSemester(year, semester) {
         // year 年份 semester 上下学期
@@ -36,6 +69,27 @@ const api = {
                 years: Number(year),
                 semester: Number(semester)
             },
+        })
+    },
+    //设置心得
+    isSetExperience(score,id){
+        return axios({
+            method:"post",
+            url:"/api/class/student/setExperienceScore",
+            data:{
+                score:score,
+                id:id
+            }
+        })
+    },
+    // 删除学生
+    newDeleteStudent(id) {
+        return axios({
+            method: 'post',
+            url: '/api/class/student/delete',
+            data: {
+                id: id
+            }
         })
     },
     // 删除学期
@@ -83,11 +137,116 @@ const api = {
             method: 'get',
             url: `/api/teacher/list`,
             params: {
-                limit: 10000, //数据
+                limit: 10, //数据
                 skip: skip, //页数
             }
         })
     },
+
+    //查询学生管理列表
+    getStudentWrapper(skip) {
+        return axios({
+            url: '/api/admin/student/list',
+            method: "get",
+            params: {
+                limit: 10,
+                skip: skip
+            }
+        })
+    },
+
+    // 删除学习管理学生
+    deleteStudent(id) {
+        return axios({
+            method: 'post',
+            url: "/api/admin/student/delete",
+            data: {
+                id: id,//学生ID
+            }
+        })
+    },
+    //创建班级
+    isCreateClass(id, list) {
+        return axios({
+            method: "post",
+            url: "/api/class/create",
+            data: {
+                semesterId: id,
+                list: list
+            }
+        })
+    },
+
+    //修改班级名称
+    amendClassName(obj) {
+        return axios({
+            method: 'post',
+            url: "/api/class/edit",
+            data: {
+                semesterId: obj.semesterId,
+                classId: obj.classId,
+                name: obj.name
+            }
+        })
+    },
+    // 老师查询班级列表
+    isTeacher(id) {
+        return axios({
+            method: 'get',
+            url: "/api/class/list",
+            params: {
+                semesterId: id
+            }
+        })
+    },
+    // 添加管理学生
+    isAddStudent(arr) {
+        return axios({
+            method: "post",
+            url: "/api/admin/student/create",
+            data: {
+                student: arr
+            }
+        })
+    },
+    // 新 添加学生
+    isAddStudentNew(obj) {
+        return axios({
+            method: 'post',
+            url: "/api/class/student/add",
+            data: {
+                semesterId: obj.semesterId,
+                classId: obj.classId,
+                student: obj.student
+            }
+        })
+    },
+    //修改学生信息
+    isAmendMessage(obj) {
+        return axios({
+            method: "post",
+            url: "/api/admin/student/edit",
+            data: {
+                id: obj.id,
+                name: obj.name,
+                department: obj.department,
+                profession: obj.profession,
+                grade: obj.grade
+            }
+        })
+    },
+    //修改老师姓名
+    amendTeacherName(id, name) {
+        return axios({
+            method: 'post',
+            url: "/api/teacher/edit",
+            data: {
+                id: id,
+                name: name
+            }
+        })
+    },
+
     deleteTeacher(id) {
         return axios({
             method: 'post',
@@ -97,11 +256,20 @@ const api = {
             }
         })
     },
+
+    getClassdetails(semesterId, classId) {
+        return axios({
+            method: 'get',
+            url: "/api/class/details",
+            params: {
+                semesterId,
+                classId
+            }
+        })
+    },
     // 查询老师所有的班级
     inquireClassList(limit, skip, id, semester) {
-        console.log(skip,semester)
-   
-        if (id == '' ) {
+        if (id == '') {
             id = null
         }
         return axios({
@@ -117,18 +285,13 @@ const api = {
 
     },
     // 获取学生列表
-    getStudentList({
-        limit = 10,
-        skip = 0,
-        id
-    }) {
+    getStudentList(semesterId, classId) {
         return axios({
             method: 'get',
             url: '/api/class/getStudent',
             params: {
-                limit: limit,
-                skip: skip,
-                id: id
+                semesterId: limit,
+                classId: skip,
             }
         })
     },
@@ -144,13 +307,14 @@ const api = {
         })
     },
     //导出班级学生
-    exportStudent(id) {
+    ex(semesterId,classId) {
         return axios({
             method: 'get',
-            url: '/api/student/exportExcel',
+            url: '/api/class/student/exportExcel',
             responseType: 'arraybuffer',
             params: {
-                id: id //导出班级的id
+                semesterId,
+                classId
             }
         })
     },
@@ -181,9 +345,19 @@ const api = {
     changePassword(password) {
         return axios({
             method: 'post',
-            url: '/api/user/setPassword',
+            url: '/api/admin/setPassword',
             data: {
                 password: password
+            }
+        })
+    },
+    deleteBanji(classId, semesterId) {
+        return axios({
+            method: 'post',
+            url: '/api/class/delete',
+            data: {
+                classId: classId,
+                semesterId: semesterId
             }
         })
     }

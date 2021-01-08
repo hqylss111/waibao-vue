@@ -1,11 +1,12 @@
 <template>
   <div class="wrapper">
     <div class="login">
-      <div class="title">后台管理系统</div>
+      <!-- <div class="title">后台管理系统</div>
       <input type="text" v-model="account" placeholder="请你输入账号" />
       <input v-model="psd" type="password" placeholder="请你输入密码" />
       <div class="text" v-if="islock">密码或者账号未填写请检查</div>
-      <button @click="logIn">登录</button>
+      <button @click="logIn">登录</button> -->
+      <div @click="demo">点击</div>
     </div>
   </div>
 </template>
@@ -23,6 +24,11 @@ export default {
     };
   },
   methods: {
+    demo(){
+       api.dmeo().then(res => {
+        console.log(res)
+       })
+    },
     // 登录
     async logIn() {
       this.islock = false;
@@ -50,6 +56,7 @@ export default {
             type: "success"
           });
           localStorage.setItem('info',res.data.data.info.roles)
+          console.log(this.$store)
           this.$store.dispatch("verdictTokenData", data); //存缓存和唯一标识
           this.$router.push("/content");
         }else{
@@ -60,10 +67,6 @@ export default {
           this.$message.error(`${res.data.message} 检查账号密码是否正确`);
         }
       });
-
-      // //存缓存
-
-      // //成功以后进去页面
     },
     //判断数据
     dataDetermine(account, psd) {

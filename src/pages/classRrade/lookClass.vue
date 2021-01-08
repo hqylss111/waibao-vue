@@ -8,12 +8,13 @@
     </div>
   </div>
 </template>
-
 <script>
 import api from "../../api/index";
 export default {
   data() {
-    return {};
+    return {
+      list: [1, 2, 3, 4]
+    };
   },
   created() {},
   methods: {

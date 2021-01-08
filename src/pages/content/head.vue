@@ -4,13 +4,12 @@
       <div class="left">后台管理系统</div>
       <div class="ringht">
         <span class="text">{{info}}</span>
-         <span class="text-red" @click="clear">注销</span>
+        <span class="text-red" @click="clear">注销</span>
+        <span class="Tc" @click="clear">退出</span>
       </div>
     </div>
   </div>
 </template>
-
-
 <script>
 export default {
   data() {
@@ -20,9 +19,8 @@ export default {
   },
   created() {
     //    获取唯一标识 和 标识 清除缓存
-    let info = localStorage.getItem('info')
+    let info = localStorage.getItem("info");
     this.info = info;
-
   },
   methods: {
     clear() {
@@ -48,7 +46,7 @@ export default {
 .left {
   width: 250px;
   font-size: 25px;
-
+  font-weight: bolder;
   font-family: "Courier New", Courier, monospace;
   text-align: center;
   line-height: 60px;
@@ -61,14 +59,25 @@ export default {
 }
 .ringht span {
   margin-right: 15px;
+  font-weight: bolder;
 }
 .text-red {
-     background: #fff;
-    padding: 10px;
-    color: #f40;
-    border-radius: 4px;
+  padding: 10px;
+  border-radius: 4px;
+  padding: 5px 18px;
+  background: #f40;
+  color: #fff;
+  cursor: pointer;
 }
 .text {
   font-size: 14px;
+}
+.Tc{
+   padding: 10px;
+  border-radius: 4px;
+  padding: 5px 18px;
+  background: #f40;
+  color: #fff;
+  cursor: pointer;
 }
 </style>

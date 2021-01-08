@@ -164,7 +164,6 @@ export default {
           }
           console.log(wb);
           outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
-
           //outdata就是读取的数据（不包含标题行即表头，表头会作为对象的下标）
           //此处可对数据进行处理
           let arr = [];

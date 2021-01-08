@@ -24,7 +24,6 @@
     ></el-pagination>
   </div>
 </template>
-
 <script>
 import api from "../../api/index";
 export default {

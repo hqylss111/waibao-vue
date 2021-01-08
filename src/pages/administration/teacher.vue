@@ -1,7 +1,7 @@
 <template>
   <div class="createTeacher">
     <div class="title">创建教师</div>
-    <div class="create" v-if="is">
+    <div class="create" v-if="data">
       <input
         type="text"
         v-model="name"
@@ -51,8 +51,8 @@
       </el-upload>
       <el-button
         type="primary"
+        class="chuangjian"
         @click="toLeadTeacher"
-        style="margin-top:10px;width:250px;margin-left:1px"
       >创建老师</el-button>
       <el-button
         type="primary"
@@ -78,7 +78,10 @@ export default {
       classGrade: ""
     };
   },
-  props: ["is"],
+  props: ['data'],
+  create(){
+    console.log(this.props,9999)
+  },
   methods: {
     //超出上传范围
     handleExceed(file) {
@@ -126,12 +129,9 @@ export default {
       let _this = this;
       let inputDOM = this.$refs.inputer;
       // 通过DOM取文件数据
-
       this.file = event.currentTarget.files[0];
-
       var rABS = false; //是否将文件读取为二进制字符串
       var f = this.file;
-
       var reader = new FileReader();
       //if (!FileReader.prototype.readAsBinaryString) {
       FileReader.prototype.readAsBinaryString = function(f) {
@@ -266,6 +266,9 @@ export default {
 <style lang="less" scoped>
 .el-button--small {
   width: 250px;
+}
+.chuangjian{
+  text-align: center
 }
 @import url("../../assets/less/teacher");
 </style>

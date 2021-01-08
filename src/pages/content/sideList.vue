@@ -30,21 +30,15 @@
               </template>
               <el-menu-item-group>
                 <!-- 管理员管理导航 -->
-                <!-- <el-menu-item index="1-1">
-                  <router-link :to="{name:'administration'}" tag="li">创建学期</router-link>
-                </el-menu-item> -->
                 <el-menu-item index="1-2">
                   <router-link :to="{name:'existingSemesterList'}" tag="li">学期管理</router-link>
                 </el-menu-item>
-                <!-- <el-menu-item index="1-3">
-                  <router-link :to="{name:'teacher'}" tag="li">教室管理</router-link>
-                </el-menu-item> -->
                 <el-menu-item index="1-4">
                   <router-link :to="{name:'teacherList'}" tag="li">教师管理</router-link>
                 </el-menu-item>
-                <!-- <el-menu-item index="1-5">
-                  <router-link :to="{name:'existingSemesterList'}" tag="li">查看某个学期所有班级</router-link>
-                </el-menu-item> -->
+                <el-menu-item index="1-5">
+                  <router-link :to="{name:'studentAdministration'}" tag="li">学生管理</router-link>
+                </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
           </el-menu>
@@ -79,7 +73,7 @@ export default {
   },
   mounted() {
      let isInfo = localStorage.getItem('info');
-    if(isInfo == '校长'){
+    if(isInfo == '管理员'){
       this.info = 1;
     }
   }

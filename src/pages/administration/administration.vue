@@ -3,13 +3,11 @@
     <!-- 要做删选 0是上学期 1是下学期 -->
     <div class="create">创建学期</div>
     <div class="cereateContent">
-      <el-date-picker
-        v-model="value5"
-        align="right"
-        type="year"
-        @change="getYear"
-        placeholder="选择年"
-      ></el-date-picker>
+       <el-date-picker
+      v-model="year"
+      type="year"
+      placeholder="选择年">
+    </el-date-picker>
       <div class="menu">
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
@@ -42,19 +40,20 @@ export default {
     //创建班级
     establish() {
       // 1.拿到值发给后端
+      let year = new Date(this.year).getFullYear();
+      let semester = Number(this.semester);
       if (this.lock) {
         return;
       }
       this.lock = true;
-      let year = this.year,
-        semester = this.semester;
-
-      // 发送请求
-      // code==500 就是已经创建过了
       api.setSemester(year, semester).then(res => {
         if (res.data.code == 200) {
           this.lock = false;
           this.$message("创建成功");
+          this.year = null;
+          this.semester = null;
+          this.$parent.handleClose();
+          this.$emit('demo')
         }
         if (res.data.errorCode == 500) {
           this.$message(`${res.data.message}`);

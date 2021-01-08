@@ -49,7 +49,7 @@ export default new Router({
           component: () => import('./pages/administration/existingSemesterList.vue')
         },
         {
-          path: 'alreadyClass/:years/:id',
+          path: 'alreadyClass/:years/:semester/:id',
           name: 'alreadyClass',
           component: () => import('./pages/content/alreadyClass.vue')
         },
@@ -57,6 +57,11 @@ export default new Router({
           path: 'teacherList',
           name: 'teacherList',
           component: () => import('./pages/administration/teacherList.vue')
+        },
+        {
+          path:"studentAdministration",
+          name:'studentAdministration',
+          component : () => import('./pages/administration/studentAdministration.vue')
         },
         {
           path: 'squad/:id',

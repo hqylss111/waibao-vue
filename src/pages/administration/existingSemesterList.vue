@@ -5,7 +5,7 @@
       <div class="blockDrop">
         <div class="hint">筛选学期:</div>
         <el-dropdown @command="handleCommand" class="DropdownText">
-          <span class="el-dropdown-link">
+          <span class="el-dropdown-link myDropDown">
             <span class="text">{{DropdownText}}</span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column label="查看">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看班级</el-button>
+          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看学期</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -46,12 +46,8 @@
       <el-pagination small layout="prev, pager, next" :total="count" @current-change="onChange"></el-pagination>
     </div>
     <!-- 弹框 -->
-    <el-dialog :visible.sync="dialogVisible" width="50%">
-      <Administration />
-      <span slot="footer" class="dialog-footer">
-        <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
-        <!-- <el-button type="primary" @click="dialogVisible = false">确 定</el-button> -->
-      </span>
+    <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" width="50%">
+      <Administration id="11111" @demo='demo' />
     </el-dialog>
   </div>
 </template>
@@ -68,7 +64,7 @@ export default {
       dataList: [],
       skip: 0,
       count: 0,
-      DropdownText: "筛选上下学期", //下拉菜单显示文字，
+      DropdownText: "全学期", //下拉菜单显示文字，
       dialogVisible: false
     };
   },
@@ -80,9 +76,13 @@ export default {
     this.tableData = this.$store.getters.classList;
   },
   methods: {
+    handleClose(){
+       this.dialogVisible = false;
+    },
+    demo(a,b){
+       this.obtainClss()
+    },
     onAdded() {
-      // eslint-disable-next-line no-console
-      console.log("---新增");
       this.dialogVisible = true;
     },
     //下拉参数 删选学期
@@ -118,7 +118,7 @@ export default {
     //获取学期列表
     obtainClss(skip, semester) {
       //接口
-      //limit 一次拿多少  skip 是页面 0开始 所以我要 -1;
+      //limit 一次拿多少  skip 页数;
       api.acquireSemester({ skip, semester }).then(res => {
         this.count = res.data.data.total;
         let arr = [];
@@ -133,12 +133,12 @@ export default {
           });
         }
         this.dataList = arr;
-        // console.log(this.data);
       });
     },
     //查看学期
     handleEdit(index, row) {
-      this.$router.push(`/content/alreadyClass/${row.years}/${row._id}`);
+      let semester = row.semester ==="上学期" ? 0 : 1
+      this.$router.push(`/content/alreadyClass/${row.years}/${semester}/${row._id}`);
     },
     async handleDelete(index, row) {
       let confim = await this.$confirm("你确认要删除学期？", "提示", {
@@ -184,6 +184,7 @@ export default {
   display: flex;
   padding-left: 10px;
   margin-bottom: 10px;
+  
 }
 .hintContent {
   display: flex;
@@ -191,6 +192,7 @@ export default {
 .DropdownText {
   height: 40px;
   line-height: 40px;
+  width: 200px;
 }
 .blockDrop .hint {
   font-size: 14px;
@@ -199,7 +201,12 @@ export default {
 }
 .blockDrop .el-dropdown-link {
   background: none;
-  padding: 10px 5px;
+  width: 100%;
+  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
 }
 .hintAdd {
   font-size: 24px;
@@ -208,10 +215,15 @@ export default {
   width: 100px;
   height: 40px;
   line-height: 40px;
-  text-align: center;
   font-size: 18px;
   background: rgb(51, 153, 255);
   color: #fff;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 4px;
+  padding: 0px 13px;
+  
 }
+
 @import url("../../assets/less/existingSemesterList");
 </style>
